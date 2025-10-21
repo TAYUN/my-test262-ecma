@@ -256,7 +256,8 @@ class MyPromise {
     }
     const promisesArr = Array.from(promises);
     const len = promisesArr.length;
-    if (!len) return MyPromise.resolve([]);
+    // if (!len) return MyPromise.resolve([]);
+    if (!len) return new MyPromise(() => { }); // 永远 pending
     return new MyPromise((resolve, reject) => {
       promisesArr.forEach((promise) => {
         promise.then(resolve, reject);
@@ -280,6 +281,7 @@ class MyPromise {
         promise.then(resolve, (err) => {
           reasons[index] = err;
           if (--count === 0) {
+            // Node < 15 无原生 AggregateError 类
             const AggregateError =
               globalThis.AggregateError ||
               function (errs) {
