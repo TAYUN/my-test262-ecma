@@ -85,6 +85,11 @@ function resolvePromise(promise, value, resolve, reject) {
 
 class MyPromise {
   constructor(executor) {
+    // 根据 ECMAScript 规范，检查 executor 是否可调用
+    if (typeof executor !== 'function') {
+      throw new TypeError('Promise 构造函数接收的参数必须是一个“执行器函数”（executor function）');
+    }
+
     // 设置默认状态 pending
     this.status = PROMISE_STATUS_PENDING;
     this.value = undefined;
